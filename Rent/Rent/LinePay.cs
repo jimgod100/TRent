@@ -8,8 +8,8 @@ namespace Rent
 {
     public class LinePay
     {
-        private readonly string channelId = "2002023149";
-        private readonly string channelSecret = "9559ada7e9a06ed8f500b04ff1995659";
+        private readonly string channelId = "";
+        private readonly string channelSecret = "";
         private readonly HttpClient httpClient = new HttpClient();
 
         public async Task<string> RequestPayment(decimal amount, string currency, string orderId)
