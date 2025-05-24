@@ -1,0 +1,283 @@
+﻿@model Rent.Models.Member
+
+@{
+    ViewBag.Title = "Register";
+    Layout = null;
+}
+@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/form-validation")
+@Styles.Render("~/Content/sidebars")
+@Scripts.Render("~/bundles/modernizr")
+@Scripts.Render("~/bundles/sidebars")
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/popper")
+@Scripts.Render("~/bundles/bootstrap")
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+    <title>會員註冊</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/checkout/">
+
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            height: 100%;
+            background-color: #f5f5f5;
+            background-image: url('https://cdn.wallpapersafari.com/63/29/wTKOj4.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-signin {
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            margin: auto;
+        }
+
+            .form-signin input[type="email"],
+            .form-signin input[type="password"] {
+                margin-bottom: 10px;
+                border-radius: 0;
+            }
+
+        .btn-custom {
+            background-color: #000000;
+            color: white;
+        }
+
+            .btn-custom:hover {
+                background-color: #3c3c3c;
+            }
+
+        .btn-container {
+            padding: 0;
+        }
+
+        .form-control:focus {
+            background-color: white !important;
+            border-color: black !important;
+            border-width: 2px !important;
+            box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0) !important;
+        }
+
+        .navbar-brand {
+            font-family: 'Uber Move';
+        }
+
+        .dropdown-menu-custom {
+            display: none;
+            position: absolute;
+            background-color: white;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            margin-top: 5px;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.4s ease, transform 0.4s ease, max-height 0.4s ease;
+            max-height: 0;
+            overflow: hidden;
+            width: 200px;
+        }
+
+            .dropdown-menu-custom.show {
+                display: block;
+                opacity: 1;
+                transform: translateY(0);
+                max-height: 500px;
+            }
+
+        .dropdown-item-custom {
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            color: gray;
+        }
+
+            .dropdown-item-custom:hover {
+                background-color: #f1f1f1;
+                color: black;
+            }
+    </style>
+
+
+
+    <!-- Custom styles for this template -->
+    <link href="form-validation.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <header>
+        <nav class="navbar navbar-dark" style="background-color: #000000;">
+            <div class="container">
+                <a href="/User/Front" class="navbar-brand">TRent</a>
+                <div class="d-flex">
+                    <a href="/User/Front" class="btn btn-custom rounded-pill btn-sm px-2 py-2">首頁</a>
+                    <a href="/User/Index" class="btn btn-custom rounded-pill btn-sm px-2 py-2 mx-2">車款</a>
+                    <a href="/Order/Create" class="btn btn-custom rounded-pill btn-sm px-2 py-2">預約</a>
+                    <a href="/Login/Login" class="btn btn-custom rounded-pill btn-sm px-2 py-2 mx-2">登入</a>
+                    <a href="/Login/Register" class="btn btn-light rounded-pill btn-sm px-2 py-2">註冊</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    @using (Html.BeginForm("Register", "Login", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="container">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <main>
+                <div class="py-5 text-center">
+                    <p></p>
+                    <p></p>
+                    <img class="d-block mx-auto mb-4" src="../Image/logo.jpg" alt="" width="72" height="57">
+                    <h2 class="text-white"><strong>會員註冊</strong></h2>
+                    <p class="lead"></p>
+                </div>
+
+                <div class="row g-5">
+
+                    <div class="col-md-7 col-lg-8">
+                        <h4 class="mb-3 text-white">資料填寫</h4>
+                        <form class="needs-validation text-white" novalidate enctype="multipart/form-data">
+                            <div class="row g-3">
+                                <div class="col-sm-6 text-white">
+                                    @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+                                    <div class="invalid-feedback">
+                                        Valid first name is required.
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 text-white">
+                                    @Html.LabelFor(model => model.Passwd, htmlAttributes: new { @class = "control-label " })
+                                    @Html.EditorFor(model => model.Passwd, new { htmlAttributes = new { @class = "form-control", type = "password" } })
+                                    @Html.ValidationMessageFor(model => model.Passwd, "", new { @class = "text-danger" })
+
+                                    <div class="invalid-feedback">
+                                        Valid last name is required.
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 text-white">
+                                    @Html.LabelFor(model => model.ID, htmlAttributes: new { @class = "control-label " })
+
+                                    @Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ID, "", new { @class = "text-danger" })
+                                    <div class="invalid-feedback">
+                                        Your username is required.
+                                    </div>
+
+                                </div>
+
+                                <div class="col-sm-6 text-white">
+                                    @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label " })
+                                    @Html.DropDownListFor(model => model.Gender, new SelectList(
+                                    new List<SelectListItem>
+                                    {
+                                        new SelectListItem { Value = "", Text = "" },
+                                        new SelectListItem { Value = "F", Text = "男" },
+                                        new SelectListItem { Value = "M", Text = "女" },
+
+                                    },
+                                    "Value",
+                                    "Text"
+
+                                ), new { @class = "form-control", required = "required" })
+                                    <div class="invalid-feedback">
+                                        Please select a valid country.
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 text-white">
+                                    @Html.LabelFor(model => model.Birthday, htmlAttributes: new { @class = "control-label " })
+                                    @Html.EditorFor(model => model.Birthday, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
+                                    <div class="invalid-feedback">
+                                        Please enter your shipping address.
+                                    </div>
+                                </div>
+
+                                @Html.HiddenFor(model => model.licenses)
+
+                                <div class="col-sm-6 text-white">
+                                    @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="col-sm-6 text-white">
+                                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label " })
+                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="col-sm-6 text-white">
+                                    @Html.LabelFor(model => model.emgyContact, htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.emgyContact, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.emgyContact, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="col-sm-6 text-white">
+                                    @Html.LabelFor(model => model.relationship, htmlAttributes: new { @class = "control-label " })
+                                    @Html.EditorFor(model => model.relationship, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.relationship, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="col-sm-6 text-white">
+                                    @Html.LabelFor(model => model.emgyPhone, htmlAttributes: new { @class = "control-label " })
+                                    @Html.EditorFor(model => model.emgyPhone, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.emgyPhone, "", new { @class = "text-danger" })
+                                </div>
+                                @Html.HiddenFor(model => model.bDate)
+
+                                <div class="col-sm-6 text-white">
+                                    選擇要上傳的檔案
+                                    <input type="file" name="photo" />
+                                </div>
+                                <hr class="my-4">
+
+
+
+                                <button class="w-100 btn btn-primary btn-lg" type="submit" value="Create">註冊</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </main>
+
+
+            <footer class="my-5 pt-5 text-muted text-center text-small">
+                <p class="mb-1">&copy; 2017–2021 Company Name</p>
+                <ul class="list-inline">
+                    <li class="list-inline-item"><a href="#">Privacy</a></li>
+                    <li class="list-inline-item"><a href="#">Terms</a></li>
+                    <li class="list-inline-item"><a href="#">Support</a></li>
+                </ul>
+            </footer>
+        </div>
+
+
+        <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script src="form-validation.js"></script>
+    }
+</body>
+</html>

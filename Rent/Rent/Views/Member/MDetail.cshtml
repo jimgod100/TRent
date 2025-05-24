@@ -1,0 +1,114 @@
+﻿@model Rent.Models.Member
+
+@{
+    ViewBag.Title = "MDetail";
+}
+
+<h2>MDetail</h2>
+
+<div>
+    <h4>Member</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Passwd)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Passwd)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Gender)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Gender)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Birthday)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Birthday)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.licenses)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.licenses)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.emgyContact)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.emgyContact)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.relationship)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.relationship)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.emgyPhone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.emgyPhone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.bDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.bDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.memberID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

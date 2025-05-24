@@ -1,0 +1,164 @@
+﻿@model IEnumerable<Rent.Models.Order>
+
+
+@{
+    ViewBag.Title = "取還車";
+}
+<style>
+
+
+    .carButton {
+        background-color: #000000;
+        border-color: #000000; /* 如果需要修改边框颜色 */
+        color: white; /* 设置按钮文字颜色 */
+    }
+
+        .carButton:hover {
+            background-color: #3c3c3c; /* 保持悬停时的颜色不变 */
+            border-color: #000000; /* 如果需要修改边框颜色 */
+            color: white; /* 设置按钮文字颜色 */
+        }
+
+
+
+    .navbar-brand {
+        font-family: 'Uber Move'; /* 将字体更改为 Arial 或其他 sans-serif 字体 */
+    }
+</style>
+
+<h2>租車</h2>
+@using (Html.BeginForm("RIndex", "Order", FormMethod.Get))
+
+{
+    <p>
+        @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { placeholder = "Search" })
+        <input type="submit" value="搜尋" />
+    </p>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.orderID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.carID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Member.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.orderDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.returnDate)
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Where(m => m.returnDate >= DateTime.Now))
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.orderID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.carID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Member.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.orderDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.returnDate)
+            </td>
+
+            <td>
+                @if (item.returnDate >= DateTime.Now)
+                {
+                    <button class="btn carButton rounded-pill px-2 py-2" type="button" data-status="pickup" data-order-id="@item.orderID">取車</button>
+
+                }
+                else
+                {
+                    <p>無法取車</p>
+                }
+            </td>
+            <td>
+            </td>
+        </tr>
+    }
+
+</table>
+
+@section scripts {
+    <script defer>
+        document.addEventListener("DOMContentLoaded", function () {
+            var carButtons = document.querySelectorAll(".carButton");
+            carButtons.forEach(function (button) {
+                var orderId = button.getAttribute('data-order-id').trim();
+                var savedStatus = localStorage.getItem('orderStatus_' + orderId);
+
+                if (savedStatus) {
+                    updateButton(button, savedStatus);
+                }
+
+                button.addEventListener("click", function () {
+                    var currentStatus = this.getAttribute("data-status");
+                    var newStatus = '';
+                    var userConfirmed = false;
+                    var rentReturn = false;
+
+                    if (currentStatus === "pickup") {
+                        userConfirmed = confirm('您確定要取車嗎？');
+                        if (userConfirmed) {
+                            newStatus = 'return';
+                        }
+                    } else if (currentStatus === "return") {
+                        userConfirmed = confirm('您確定要還車嗎？');
+                        if (userConfirmed) {
+                            newStatus = 'completed';
+                            rentReturn = true;
+                        }
+                    }
+
+                    if (userConfirmed) {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("POST", '@Url.Action("UpdateRentReturn", "Order")', true);
+                        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === 4 && xhr.status === 200) {
+                                var response = JSON.parse(xhr.responseText);
+                                if (response.success) {
+                                    localStorage.setItem('orderStatus_' + orderId, newStatus);
+                                    updateButton(button, newStatus);
+                                } else {
+                                    alert('更新失敗，請重試。');
+                                }
+                            }
+                        };
+                        xhr.send(JSON.stringify({ orderId: orderId, rentReturn: rentReturn }));
+                    }
+                });
+            });
+
+            function updateButton(button, status) {
+                if (status === 'return') {
+                    button.innerHTML = "還車";
+                    button.style.backgroundColor = "white";
+                    button.style.color = "black";
+                    button.setAttribute("data-status", "return");
+                } else if (status === 'completed') {
+                    button.innerHTML = "已還車";
+                    button.style.backgroundColor = "gray";
+                    button.disabled = true;
+                }
+            }
+        });
+    </script>
+}
+
+

@@ -1,0 +1,271 @@
+﻿@model Rent.Models.Member
+
+@{
+    ViewBag.Title = "修改密碼";
+    Layout = null;
+}
+<title>修改密碼</title>
+@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/modernizr")
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Styles.Render("~/Content/sidebars")
+@Scripts.Render("~/bundles/modernizr")
+@Scripts.Render("~/bundles/sidebars")
+@Scripts.Render("~/bundles/popper")
+<style>
+    .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+    }
+
+    body {
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
+    }
+
+    html {
+        height: -webkit-fill-available;
+    }
+
+    main {
+        display: flex;
+        flex-wrap: nowrap;
+        height: 100vh;
+        height: -webkit-fill-available;
+        max-height: 100vh;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+    .b-example-divider {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+    }
+
+    .bi {
+        vertical-align: -.125em;
+        pointer-events: none;
+        fill: currentColor;
+    }
+
+    .dropdown-toggle {
+        outline: 0;
+    }
+
+    .nav-flush .nav-link {
+        border-radius: 0;
+    }
+
+    .btn-toggle {
+        display: inline-flex;
+        align-items: center;
+        padding: .25rem .5rem;
+        font-weight: 600;
+        color: rgba(0, 0, 0, .65);
+        background-color: transparent;
+        border: 0;
+    }
+
+        .btn-toggle:hover,
+        .btn-toggle:focus {
+            color: rgba(0, 0, 0, .85);
+            background-color: #d2f4ea;
+        }
+
+        .btn-toggle::before {
+            width: 1.25em;
+            line-height: 0;
+            content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+            transition: transform .35s ease;
+            transform-origin: .5em 50%;
+        }
+
+        .btn-toggle[aria-expanded="true"] {
+            color: rgba(0, 0, 0, .85);
+        }
+
+            .btn-toggle[aria-expanded="true"]::before {
+                transform: rotate(90deg);
+            }
+
+    .btn-toggle-nav a {
+        display: inline-flex;
+        padding: .1875rem .5rem;
+        margin-top: .125rem;
+        margin-left: 1.25rem;
+        text-decoration: none;
+    }
+
+        .btn-toggle-nav a:hover,
+        .btn-toggle-nav a:focus {
+            background-color: #d2f4ea;
+        }
+
+    .scrollarea {
+        overflow-y: auto;
+    }
+
+    .fw-semibold {
+        font-weight: 600;
+    }
+
+    .lh-tight {
+        line-height: 1.25;
+    }
+</style>
+
+<nav class="navbar navbar-light bg-light fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="~/Image/logo.jpg" alt="" width="30" height="24" class="d-inline-block align-text-top">
+            <strong>德明租車</strong>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel"></h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/User/Front">首頁</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/User/Index">車款介紹</a>
+                    </li>
+                    @if (Session["Member"] != null)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Order/Create">線上預約</a>
+                        </li>
+                    }
+
+                    <li class="nav-item dropdown">
+                        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+                            門市地點
+                        </button>
+                        <div class="collapse show" id="home-collapse">
+                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                <li><a href="/Store/SIndex" class="link-dark rounded">取車地點</a></li>
+                                <li><a href="/Store/TIndex" class="link-dark rounded">還車地點</a></li>
+
+                            </ul>
+                        </div>
+
+                    </li>
+                    @if (Session["Member"] != null)
+                    {
+                        <li class="nav-item dropdown">
+                            <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+                                會員專區
+                            </button>
+                            <div class="collapse show" id="home-collapse">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                    <li><a href="/User/OrderList" class="link-dark rounded">訂單管理</a></li>
+                                    <li><a href="/User/MEdit" class="link-dark rounded">會員資料修改</a></li>
+                                    <li><a href="/User/Edit" class="link-dark rounded">密碼修改</a></li>
+                                </ul>
+                            </div>
+
+                        </li>
+                    }
+                    <li><p></p></li>
+                    <li>
+                        @if (Session["Member"] == null)
+                        {
+                            <p><a href="/Login/Login" class="btn btn-dark">登入</a></p>
+                            <p></p>
+                            <p><a href="/Login/Register" class="btn btn-warning">註冊</a></p>
+                        }
+                        else
+                        {
+                            @*若Session["Member"]不為null才顯示此按鈕*@
+                            <button type="button" class="btn btn-light text-dark me-2 link-dark">@Html.ActionLink("登出", "Logout", "Login")</button>
+
+                        }
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+<h1></h1>
+<h2 class="text-center">修改密碼</h2>
+<h1></h1>
+<div class="container-md">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <div class="row g-3">
+
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.memberID)
+                @Html.HiddenFor(model => model.name)
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success">
+                        @TempData["SuccessMessage"]
+                    </div>
+                }
+
+                <div class="col-sm-6 offset-sm-3">
+                    <div class="form-group">
+                        <p>修改密碼</p>
+
+                        @Html.TextBoxFor(m => m.Passwd, new { @class = "form-control", Value = "", type = "password" })
+                        @Html.ValidationMessageFor(m => m.Passwd, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-6 offset-sm-3">
+                    <div class="form-group">
+                        <p>確認密碼</p>
+                        @Html.Password("ConfirmPasswd", null, new { @class = "form-control" })
+                        @Html.ValidationMessage("ConfirmPasswd", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @Html.HiddenFor(model => model.ID)
+                @Html.HiddenFor(model => model.Gender)
+                @Html.HiddenFor(model => model.Birthday)
+                @Html.HiddenFor(model => model.licenses)
+                @Html.HiddenFor(model => model.Phone)
+                @Html.HiddenFor(model => model.Email)
+                @Html.HiddenFor(model => model.emgyContact)
+                @Html.HiddenFor(model => model.relationship)
+                @Html.HiddenFor(model => model.emgyPhone)
+                @Html.HiddenFor(model => model.bDate)
+            </div>
+            <p></p>
+            <div class="row g-3">
+                <div class="col-sm-6 offset-sm-3">
+                    <div class="form-group">
+                        <div class="justify-content-center">
+                            <input type="submit" value="儲存" class="btn btn-dark btn-lg" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

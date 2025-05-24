@@ -1,0 +1,114 @@
+﻿@model IEnumerable<Rent.Models.Car>
+
+@{
+    ViewBag.Title = "車款介紹";
+}
+
+<h2>車款介紹</h2>
+
+
+<p>
+    @Html.ActionLink("建立車款", "Create")
+</p>
+@using (Html.BeginForm("Index", "Car", FormMethod.Get))
+{
+    <p>
+        @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { placeholder = "Search" })
+        <input type="submit" value="搜尋" />
+    </p>
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.carID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.seatNume)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.transmission)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.luggages)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.others)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Photo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.rent1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.rent2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.carDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.bDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Brand.English)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.carType.carType1)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.carID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.seatNume)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.transmission)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.luggages)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.others)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Photo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rent1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rent2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.carDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.bDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Brand.English)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.carType.carType1)
+            </td>
+            <td>
+                @Html.ActionLink("編輯", "Edit", new { carID = item.carID }) |
+
+                @Html.ActionLink("刪除", "Delete", new { carID = item.carID }, new { onclick = "return confirm('確定要刪除嗎')" })
+            </td>
+        </tr>
+    }
+
+</table>

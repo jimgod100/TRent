@@ -1,0 +1,103 @@
+﻿@model IEnumerable<Rent.Models.Order>
+
+@{
+    ViewBag.Title = "租車訂單";
+}
+
+<h2>租車訂單</h2>
+
+
+@using (Html.BeginForm("Index", "Order", FormMethod.Get))
+{
+    <p>
+        @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { placeholder = "Search" })
+        <input type="submit" value="搜尋" />
+    </p>
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.orderID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.memberID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.rentID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.returnID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.orderDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.returnDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Car.description)
+        </th>
+        <th></th>
+        <th></th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.orderID)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.memberID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rentID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.returnID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.orderDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.returnDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Car.description)
+            </td>
+            <td>
+                @if (item.returnDate >= DateTime.Now)
+                {
+                    @Html.ActionLink("修改", "Edit", new { orderID = item.orderID })
+
+
+                }
+                else
+                {
+                    <p><a href="#" class="pe-none" tabindex="-1" aria-disabled="true">修改</a></p>
+
+                }
+            </td>
+            <td>
+                |
+            </td>
+            <td>
+                @if (item.returnDate >= DateTime.Now)
+                {
+                    @Html.ActionLink("刪除", "Delete", new { id = item.orderID }, new { onclick = "return confirm('確定要刪除嗎')" })
+                }
+                else
+                {
+                    <p><a href="#" class="pe-none" tabindex="-1" aria-disabled="true">刪除</a></p>
+
+                }
+            </td>
+            <td>
+            </td>
+        </tr>
+    }
+
+</table>

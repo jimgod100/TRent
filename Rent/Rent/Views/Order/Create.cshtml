@@ -1,0 +1,500 @@
+﻿@model Rent.Models.Order
+
+@{
+    ViewBag.Title = "Create";
+    Layout = null;
+}
+
+@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/modernizr")
+@Styles.Render("~/Content/sidebars")
+@Scripts.Render("~/bundles/modernizr")
+@Scripts.Render("~/bundles/sidebars")
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/popper")
+@Scripts.Render("~/bundles/bootstrap")
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<style>
+    body {
+        background-color: #F5F5F7; /* Set the background color to gray */
+    }
+
+    .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+    }
+
+    .btn-custom {
+        background-color: #000000;
+        border-color: #000000; /* 如果需要修改边框颜色 */
+        color: white; /* 设置按钮文字颜色 */
+    }
+
+        .btn-custom:hover {
+            background-color: #3c3c3c; /* 保持悬停时的颜色不变 */
+            border-color: #000000; /* 如果需要修改边框颜色 */
+            color: white; /* 设置按钮文字颜色 */
+        }
+
+    .btn-container {
+        padding: 0;
+    }
+
+        .btn-container:nth-child(2) {
+            margin-left: 10px; /* 設置按鈕之間的間距 */
+        }
+
+    .form-control:focus {
+        background-color: white !important;
+        border-color: black !important;
+        border-width: 2px !important; /* 更改边框粗细为2像素 */
+        box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0) !important; /* 更改阴影颜色为黑色 */
+    }
+
+    .navbar-brand {
+        font-family: 'Uber Move'; /* 将字体更改为 Arial 或其他 sans-serif 字体 */
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .dropdown-menu-custom {
+        display: none;
+        position: absolute;
+        background-color: white;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        border-radius: 5px;
+        margin-top: 5px;
+        z-index: 1000;
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: opacity 0.4s ease, transform 0.4s ease, max-height 0.4s ease; /* Added max-height transition */
+        max-height: 0; /* Initially set max-height to 0 */
+        overflow: hidden; /* Hide overflow content */
+        width: 200px; /* Increase the width of the dropdown menu */
+    }
+
+        .dropdown-menu-custom.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            max-height: 500px; /* Set to a value that is large enough to contain the dropdown items */
+        }
+
+    .dropdown-item-custom {
+        padding: 5px 10px; /* Reduce padding for a more compact look */
+        cursor: pointer;
+        font-size: 0.875rem; /* Smaller font size */
+        color: gray; /* Change text color to gray */
+    }
+
+        .dropdown-item-custom:hover {
+            background-color: #f1f1f1;
+            color: black; /* Change text color to black on hover */
+        }
+</style>
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+    <title>租車訂單</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/checkout/">
+
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="form-validation.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <header>
+        <div class="collapse bg-dark" id="navbarHeader"></div>
+        <div class="navbar navbar-dark" style="background-color: #000000;">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <a href="/User/Front" class="navbar-brand">TRent</a>
+                    </div>
+                    <div class="col btn-container">
+                        <a href="/User/Front" button class="btn btn-custom rounded-pill btn-sm px-2 py-2" type="button">首頁</a>
+                    </div>
+                    <div class="col btn-container">
+                        <a href="/User/Index" button class="btn btn-custom rounded-pill btn-sm px-2 py-2" type="button">車款</a>
+                    </div>
+                    @if (Session["Member"] != null)
+                    {
+                        <div class="col btn-container">
+                            <a href="/Order/Create" button class="btn btn-custom rounded-pill btn-sm px-2 py-2" type="button">預約</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col btn-container">
+                            <a href="/Login/Login" button class="btn btn-custom rounded-pill btn-sm px-2 py-2" type="button">預約</a>
+                        </div>
+                    }
+                </div>
+                <div class="row align-items-center">
+                    @if (Session["Member"] != null)
+                    {
+                        <div class="col btn-container">
+                            <button class="btn btn-custom rounded-pill text-white btn-sm px-2 py-2 ml-2" type="button" id="dropdownButton1">
+                                會員&nbsp
+                                <span id="arrowIcon1" class="fas fa-chevron-down"></span>
+                            </button>
+                            <div class="dropdown-menu-custom" id="dropdownMenu1">
+                                <div class="dropdown-item-custom" onclick="navigateToOrderndex()">訂單管理</div>
+                                <div class="dropdown-item-custom" onclick="navigateToOrderdex()">會員資料修改</div>
+                                <div class="dropdown-item-custom" onclick="navigateToOrderreate()">密碼修改</div>
+                            </div>
+                        </div>
+                        <div class="col btn-container">
+                            <button class="btn btn-custom rounded-pill text-white btn-sm px-2 py-2 ml-2" type="button" id="dropdownButton2">
+                                門市&nbsp
+                                <span id="arrowIcon2" class="fas fa-chevron-down"></span>
+                            </button>
+                            <div class="dropdown-menu-custom" id="dropdownMenu2">
+                                <div class="dropdown-item-custom" onclick="navigateToOrderCreate()">取車地點</div>
+                                <div class="dropdown-item-custom" onclick="navigateToOrderIndex()">還車地點</div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col btn-container">
+                            <a href="/Login/Login" button class="btn btn-custom rounded-pill text-white btn-sm px-2 py-2 ml-2" type="button">登入</a>
+                        </div>
+                        <div class="col btn-container">
+                            <a href="/Login/Register" button class="btn btn-light rounded-pill btn-sm px-2 py-2 ml-2" type="button">註冊</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </header>
+    <form action="@Url.Action("Create")" method="post">
+        <div class="container">
+            <main>
+                <p></p>
+                <p></p>
+
+                <div class="py-5 text-center">
+                    <img class="d-block mx-auto mb-4" src="../Image/logo.jpg" alt="" width="72" height="57">
+                    <h2>訂單填寫</h2>
+                    <p class="lead"></p>
+                </div>
+                <hr />
+
+                <div class="row g-5">
+
+                    <div class="col-md-7 col-lg-8">
+                        <h4 class="mb-3"><strong>取還車站點及時間</strong></h4>
+
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <label for="rentID" class="form-label"><strong>取車地點</strong></label>
+                                <select id="rentID" name="rentID" class="form-control" style="background-color: #cfcfcf;" required>
+                                    <option value="">Choose...</option>
+                                    <option value="02">台北士林站</option>
+                                    <option value="03">松山機場站</option>
+                                    <option value="04">台北內湖站</option>
+                                    <option value="05">台北濱江站</option>
+                                    <option value="06">新北永和站</option>
+                                    <option value="07">新北中和站</option>
+                                    <option value="08">新北蘆洲站</option>
+                                    <option value="09">宜蘭羅東站</option>
+                                    <option value="10">新竹高鐵站</option>
+                                    <option value="11">桃園中壢站</option>
+                                    <option value="12">桃園高鐵站</option>
+                                    <option value="13">桃園南崁站</option>
+                                    <option value="14">苗栗高鐵站</option>
+                                    <option value="15">台中建國站</option>
+                                    <option value="16">台中高鐵站</option>
+                                    <option value="17">台中機場站</option>
+                                    <option value="18">彰化中正站</option>
+                                    <option value="19">彰化高鐵站</option>
+                                    <option value="20">嘉義高鐵站</option>
+                                    <option value="21">雲林高鐵站</option>
+                                    <option value="22">台南成功站</option>
+                                    <option value="23">台南高鐵站</option>
+                                    <option value="24">高雄中正站</option>
+                                    <option value="25">小港機場站</option>
+                                    <option value="26">左營高鐵站</option>
+                                    <option value="27">台東站</option>
+                                    <option value="28">花蓮站</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select a valid country.
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="returnID" class="form-label"><strong>還車地點</strong></label>
+                                <select id="returnID" name="returnID" class="form-control" style="background-color: #cfcfcf;" required>
+                                    <option value="">Choose...</option>
+                                    <option value="02">台北士林站</option>
+                                    <option value="03">松山機場站</option>
+                                    <option value="04">台北內湖站</option>
+                                    <option value="05">台北濱江站</option>
+                                    <option value="06">新北永和站</option>
+                                    <option value="07">新北中和站</option>
+                                    <option value="08">新北蘆洲站</option>
+                                    <option value="09">宜蘭羅東站</option>
+                                    <option value="10">新竹高鐵站</option>
+                                    <option value="11">桃園中壢站</option>
+                                    <option value="12">桃園高鐵站</option>
+                                    <option value="13">桃園南崁站</option>
+                                    <option value="14">苗栗高鐵站</option>
+                                    <option value="15">台中建國站</option>
+                                    <option value="16">台中高鐵站</option>
+                                    <option value="17">台中機場站</option>
+                                    <option value="18">彰化中正站</option>
+                                    <option value="19">彰化高鐵站</option>
+                                    <option value="20">嘉義高鐵站</option>
+                                    <option value="21">雲林高鐵站</option>
+                                    <option value="22">台南成功站</option>
+                                    <option value="23">台南高鐵站</option>
+                                    <option value="24">高雄中正站</option>
+                                    <option value="25">小港機場站</option>
+                                    <option value="26">左營高鐵站</option>
+                                    <option value="27">台東站</option>
+                                    <option value="28">花蓮站</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select a valid country.
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <strong>
+                                        @Html.LabelFor(model => model.orderDate, htmlAttributes: new { @class = "control-label " })
+                                    </strong>
+                                    @Html.EditorFor(model => model.orderDate, new { htmlAttributes = new { @class = "form-control", type = "date", style = "background-color: #cfcfcf;" } })
+                                    @Html.ValidationMessageFor(model => model.orderDate, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <strong>
+                                        @Html.Label("orderTime", "取車時間", htmlAttributes: new { @class = "control-label" })
+                                    </strong>
+                                    <input type="time" id="orderTime" name="orderTime" class="form-control" style="background-color: #cfcfcf;" required />
+                                    <div class="invalid-feedback">
+                                        Please select a valid time.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <strong>
+                                        @Html.LabelFor(model => model.returnDate, htmlAttributes: new { @class = "control-label " })
+                                    </strong>
+                                    @Html.EditorFor(model => model.returnDate, new { htmlAttributes = new { @class = "form-control", type = "date", style = "background-color: #cfcfcf;" } })
+                                    @Html.ValidationMessageFor(model => model.returnDate, "", new { @class = "text-danger" })
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <strong>
+                                        @Html.Label("returnTime", "還車時間", htmlAttributes: new { @class = "control-label" })
+                                    </strong>
+                                    <input type="time" id="returnTime" name="returnTime" class="form-control" style="background-color: #cfcfcf;" required />
+                                    <p class="text-danger">@ViewBag.essage</p>
+                                    <div class="invalid-feedback">
+                                        Please select a valid time.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="returnID" class="form-label"><strong>車款類型</strong></label>
+                                @Html.DropDownListFor(model => model.carID, new SelectList(
+                                    new List<SelectListItem>
+                                    {
+                                        new SelectListItem { Value = "AAA0001", Text = "NX 200" },
+                                        new SelectListItem { Value = "AAA0002", Text = "YARiS CROSS" },
+                                        new SelectListItem { Value = "AAA0003", Text = "TOWN ACE" },
+                                        new SelectListItem { Value = "AAA0004", Text = "SWIFT" },
+                                        new SelectListItem { Value = "AAA0005", Text = "Town Ace 廂型車" },
+                                        new SelectListItem { Value = "AAA0006", Text = "ALTIS Safety+" },
+                                        new SelectListItem { Value = "AAA0007", Text = "ALTIS" },
+                                        new SelectListItem { Value = "AAA0008", Text = "PRIUS C" },
+                                        new SelectListItem { Value = "AAA0009", Text = "VIOS" },
+                                    },
+                                    "Value",
+                                    "Text",
+                                    ViewBag.SelectedCarID ?? TempData["SelectedCarID"]// 设置选中项
+                                ), new { @class = "form-control", required = "required", style = "background-color: #cfcfcf;" })
+                                <div class="invalid-feedback">
+                                    Please select a valid country.
+                                </div>
+                            </div>
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    // 門市的下拉選單
+                                    var dropdownButton2 = document.getElementById('dropdownButton2');
+                                    var dropdownMenu2 = document.getElementById('dropdownMenu2');
+                                    var arrowIcon2 = document.getElementById('arrowIcon2');
+
+                                    dropdownButton2.addEventListener('click', function () {
+                                        if (dropdownMenu2.classList.contains('show')) {
+                                            dropdownMenu2.classList.remove('show');
+                                            arrowIcon2.classList.remove('fa-chevron-up');
+                                            arrowIcon2.classList.add('fa-chevron-down');
+                                        } else {
+                                            dropdownMenu2.classList.add('show');
+                                            arrowIcon2.classList.remove('fa-chevron-down');
+                                            arrowIcon2.classList.add('fa-chevron-up');
+                                        }
+                                    });
+
+                                    // 會員的下拉選單
+                                    var dropdownButton1 = document.getElementById('dropdownButton1');
+                                    var dropdownMenu1 = document.getElementById('dropdownMenu1');
+                                    var arrowIcon1 = document.getElementById('arrowIcon1');
+
+                                    dropdownButton1.addEventListener('click', function () {
+                                        if (dropdownMenu1.classList.contains('show')) {
+                                            dropdownMenu1.classList.remove('show');
+                                            arrowIcon1.classList.remove('fa-chevron-up');
+                                            arrowIcon1.classList.add('fa-chevron-down');
+                                        } else {
+                                            dropdownMenu1.classList.add('show');
+                                            arrowIcon1.classList.remove('fa-chevron-down');
+                                            arrowIcon1.classList.add('fa-chevron-up');
+                                        }
+                                    });
+                                });
+
+                                function navigateToOrderCreate() {
+                                    window.location.href = "/Store/SIndex";
+                                }
+
+                                function navigateToOrderIndex() {
+                                    window.location.href = "/Store/TIndex";
+                                }
+
+                                function navigateToOrderreate() {
+                                    window.location.href = "/User/Edit";
+                                }
+
+                                function navigateToOrderndex() {
+                                    window.location.href = "/User/OrderList";
+                                }
+
+                                function navigateToOrderdex() {
+                                    window.location.href = "/User/MEdit";
+                                }
+                                function logout() {
+                                    window.location.href = '/Login/Logout'; // Modify the URL according to your routing
+                                }
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    function calculateRental() {
+                                        var orderDate = document.getElementById('orderDate').value;
+                                        var orderTime = document.getElementById('orderTime').value;
+                                        var returnDate = document.getElementById('returnDate').value;
+                                        var returnTime = document.getElementById('returnTime').value;
+
+                                        if (orderDate && orderTime && returnDate && returnTime) {
+                                            var startDate = new Date(orderDate + 'T' + orderTime);
+                                            var endDate = new Date(returnDate + 'T' + returnTime);
+
+                                            var difference = endDate - startDate; // 時間差（毫秒）
+                                            var hours = difference / 3600000; // 將毫秒轉換為小時
+
+                                            var rentalRate = 1200; // 每24小時的基本費率
+                                            var additionalHours = Math.ceil((hours - 24) / 24);
+                                            var totalCost = rentalRate + (additionalHours > 0 ? additionalHours * rentalRate : 0);
+
+                                            document.getElementById('totalAmount').innerText = '$ ' + totalCost;
+                                            document.getElementById('rentC').value = totalCost; // 假設您有一個輸入字段來存儲此值
+                                        }
+                                    }
+
+                                    document.getElementById('orderDate').addEventListener('change', calculateRental);
+                                    document.getElementById('orderTime').addEventListener('change', calculateRental);
+                                    document.getElementById('returnDate').addEventListener('change', calculateRental);
+                                    document.getElementById('returnTime').addEventListener('change', calculateRental);
+                                    
+                                });
+                            </script>
+                            <div class="col-sm-6">
+                                <h4><strong>本次消費總金額 </strong></h4>
+                                <input type="hidden" id="rentC" name="rentC" value="0" />
+                                <h4><strong id="totalAmount">$ 0</strong></h4>
+
+                            </div>
+                            <hr class="my-4">
+                            <h5 style="margin-bottom: 5px;"><strong>付款注意事項</strong></h5>
+                            <p style="margin-top: 5px; margin-bottom: 5px;">*預約成功後請消費者於租車時間前12小時繳費，若未於時間內繳費將會取消訂單</p>
+                            <h5 style="margin-bottom: 5px;"><strong>取消注意事項</strong></h5>
+                            <p style="margin-top: 5px; margin-bottom: 5px;">*若要取消租車訂單需於租車時間一天前取消訂單，若逾時則退款50%</p>
+                            <h4 style="margin-top: 5px;"><strong>24小時內的取車, 得即時付款</strong></h4>
+                            <hr class="my-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    <strong>我已閱讀並同意以上事項</strong>
+                                </label>
+                            </div>
+                            <div class="w-100">
+                                <input id="Submit1" type="submit" value="確認租車" class="btn btn-primary btn-lg" onclick="checkCheckbox(event)" />
+                            </div>
+                            <script>
+                                function checkCheckbox(event) {
+                                    var checkbox = document.getElementById('flexCheckDefault');
+                                    if (!checkbox.checked) {
+                                        alert('請閱讀注意事項');
+                                        event.preventDefault(); // 防止表單提交
+                                    }
+                                }
+                            </script>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+            </main>
+
+            <footer class="my-5 pt-5 text-muted text-center text-small">
+                <p class="mb-1">&copy; 2017–2021 Company Name</p>
+                <ul class="list-inline">
+                    <li class="list-inline-item"><a href="#">Privacy</a></li>
+                    <li class="list-inline-item"><a href="#">Terms</a></li>
+                    <li class="list-inline-item"><a href="#">Support</a></li>
+                </ul>
+            </footer>
+        </div>
+
+
+        <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script src="form-validation.js"></script>
+    </form>
+</body>
+</html>

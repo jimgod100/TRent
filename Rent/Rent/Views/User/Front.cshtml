@@ -1,0 +1,357 @@
+﻿@model Rent.Models.Order
+@{
+    ViewBag.Title = "Front";
+    Layout = null;
+}
+
+@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/modernizr")
+
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+<head>
+    <script src="../assets/js/color-modes.js"></script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.122.0">
+    <title>TRent</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/album/">
+
+
+
+
+
+    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        body {
+            background-color: #F5F5F7; /* Set the background color to gray */
+        }
+
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        .btn-custom {
+            background-color: #000000;
+            border-color: #000000; /* 如果需要修改边框颜色 */
+            color: white; /* 设置按钮文字颜色 */
+        }
+
+            .btn-custom:hover {
+                background-color: #3c3c3c; /* 保持悬停时的颜色不变 */
+                border-color: #000000; /* 如果需要修改边框颜色 */
+                color: white; /* 设置按钮文字颜色 */
+            }
+
+        .btn-container {
+            padding: 0;
+        }
+
+            .btn-container:nth-child(2) {
+                margin-left: 10px; /* 設置按鈕之間的間距 */
+            }
+
+        .form-control:focus {
+            background-color: white !important;
+            border-color: black !important;
+            border-width: 2px !important; /* 更改边框粗细为2像素 */
+            box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0) !important; /* 更改阴影颜色为黑色 */
+        }
+
+        .navbar-brand {
+            font-family: 'Uber Move'; /* 将字体更改为 Arial 或其他 sans-serif 字体 */
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .dropdown-menu-custom {
+            display: none;
+            position: absolute;
+            background-color: white;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            margin-top: 5px;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.4s ease, transform 0.4s ease, max-height 0.4s ease; /* Added max-height transition */
+            max-height: 0; /* Initially set max-height to 0 */
+            overflow: hidden; /* Hide overflow content */
+            width: 200px; /* Increase the width of the dropdown menu */
+        }
+
+            .dropdown-menu-custom.show {
+                display: block;
+                opacity: 1;
+                transform: translateY(0);
+                max-height: 500px; /* Set to a value that is large enough to contain the dropdown items */
+            }
+
+        .dropdown-item-custom {
+            padding: 5px 10px; /* Reduce padding for a more compact look */
+            cursor: pointer;
+            font-size: 0.875rem; /* Smaller font size */
+            color: gray; /* Change text color to gray */
+        }
+
+            .dropdown-item-custom:hover {
+                background-color: #f1f1f1;
+                color: black; /* Change text color to black on hover */
+            }
+    </style>
+
+
+</head>
+<body>
+    <header>
+        <div class="collapse bg-dark" id="navbarHeader"></div>
+        <div class="navbar navbar-dark" style="background-color: #000000;">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <a href="/User/Front" class="navbar-brand">TRent</a>
+                    </div>
+                    <div class="col btn-container">
+                        <a href="/User/Front" button class="btn btn-custom rounded-pill btn-sm px-2 py-2" type="button">首頁</a>
+                    </div>
+                    <div class="col btn-container">
+                        <a href="/User/Index" button class="btn btn-custom rounded-pill btn-sm px-2 py-2" type="button">車款</a>
+                    </div>
+                    @if (Session["Member"] != null)
+                    {
+                        <div class="col btn-container">
+                            <a href="/Order/Create" button class="btn btn-custom rounded-pill btn-sm px-2 py-2" type="button">預約</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col btn-container">
+                            <a href="/Login/Login" button class="btn btn-custom rounded-pill btn-sm px-2 py-2" type="button">預約</a>
+                        </div>
+                    }
+                </div>
+                <div class="row align-items-center">
+                    @if (Session["Member"] != null)
+                    {
+                        <div class="col btn-container">
+                            <button class="btn btn-custom rounded-pill text-white btn-sm px-2 py-2 ml-2" type="button" id="dropdownButton1">
+                                會員&nbsp
+                                <span id="arrowIcon1" class="fas fa-chevron-down"></span>
+                            </button>
+                            <div class="dropdown-menu-custom" id="dropdownMenu1">
+                                <div class="dropdown-item-custom" onclick="navigateToOrderndex()">訂單管理</div>
+                                <div class="dropdown-item-custom" onclick="navigateToOrderdex()">會員資料修改</div>
+                                <div class="dropdown-item-custom" onclick="navigateToOrderreate()">密碼修改</div>
+                                <div class="dropdown-item-custom" onclick="logout()">登出</div>
+                            </div>
+                        </div>
+                        <div class="col btn-container">
+                            <button class="btn btn-custom rounded-pill text-white btn-sm px-2 py-2 ml-2" type="button" id="dropdownButton2">
+                                門市&nbsp
+                                <span id="arrowIcon2" class="fas fa-chevron-down"></span>
+                            </button>
+                            <div class="dropdown-menu-custom" id="dropdownMenu2">
+                                <div class="dropdown-item-custom" onclick="navigateToOrderCreate()">取車地點</div>
+                                <div class="dropdown-item-custom" onclick="navigateToOrderIndex()">還車地點</div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col btn-container">
+                            <a href="/Login/Login" button class="btn btn-custom rounded-pill text-white btn-sm px-2 py-2 ml-2" type="button">登入</a>
+                        </div>
+                        <div class="col btn-container">
+                            <a href="/Login/Register" button class="btn btn-light rounded-pill btn-sm px-2 py-2 ml-2" type="button">註冊</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <div class="container col-xxl-8 px-4 py-5">
+            <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+                <div class="col-10 col-sm-8 col-lg-6">
+                    <img src="~/Image/lady.jpg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
+                </div>
+                <div class="col-lg-6">
+                    <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3" style="color: #000000;">隨時提供您所需的租車服務</h1>
+                    <p>預約租車，上車出發。</p>
+                    <div class="justify-content-md-start">
+                        <div class="form mb-3">
+
+
+                            <select id="rentID" name="rentID" class="form-control" style="background-color: #cfcfcf;" required>
+                                <option value="">選擇取車地點</option>
+                                <option value="02">台北士林站</option>
+                                <option value="03">松山機場站</option>
+                                <option value="04">台北內湖站</option>
+                                <option value="05">台北濱江站</option>
+                                <option value="06">新北永和站</option>
+                                <option value="07">新北中和站</option>
+                                <option value="08">新北蘆洲站</option>
+                                <option value="09">宜蘭羅東站</option>
+                                <option value="10">新竹高鐵站</option>
+                                <option value="11">桃園中壢站</option>
+                                <option value="12">桃園高鐵站</option>
+                                <option value="13">桃園南崁站</option>
+                                <option value="14">苗栗高鐵站</option>
+                                <option value="15">台中建國站</option>
+                                <option value="16">台中高鐵站</option>
+                                <option value="17">台中機場站</option>
+                                <option value="18">彰化中正站</option>
+                                <option value="19">彰化高鐵站</option>
+                                <option value="20">嘉義高鐵站</option>
+                                <option value="21">雲林高鐵站</option>
+                                <option value="22">台南成功站</option>
+                                <option value="23">台南高鐵站</option>
+                                <option value="24">高雄中正站</option>
+                                <option value="25">小港機場站</option>
+                                <option value="26">左營高鐵站</option>
+                                <option value="27">台東站</option>
+                                <option value="28">花蓮站</option>
+                            </select>
+                        </div>
+                        <div class="form mb-3">
+                            <select id="returnID" name="returnID" class="form-control" style="background-color: #cfcfcf;" required>
+                                <option value="">選擇還車地點</option>
+                                <option value="02">台北士林站</option>
+                                <option value="03">松山機場站</option>
+                                <option value="04">台北內湖站</option>
+                                <option value="05">台北濱江站</option>
+                                <option value="06">新北永和站</option>
+                                <option value="07">新北中和站</option>
+                                <option value="08">新北蘆洲站</option>
+                                <option value="09">宜蘭羅東站</option>
+                                <option value="10">新竹高鐵站</option>
+                                <option value="11">桃園中壢站</option>
+                                <option value="12">桃園高鐵站</option>
+                                <option value="13">桃園南崁站</option>
+                                <option value="14">苗栗高鐵站</option>
+                                <option value="15">台中建國站</option>
+                                <option value="16">台中高鐵站</option>
+                                <option value="17">台中機場站</option>
+                                <option value="18">彰化中正站</option>
+                                <option value="19">彰化高鐵站</option>
+                                <option value="20">嘉義高鐵站</option>
+                                <option value="21">雲林高鐵站</option>
+                                <option value="22">台南成功站</option>
+                                <option value="23">台南高鐵站</option>
+                                <option value="24">高雄中正站</option>
+                                <option value="25">小港機場站</option>
+                                <option value="26">左營高鐵站</option>
+                                <option value="27">台東站</option>
+                                <option value="28">花蓮站</option>
+                            </select>
+                        </div>
+
+
+                        @Html.DropDownListFor(model => model.carID, new SelectList(
+                            new List<SelectListItem>
+                            {
+                                new SelectListItem { Value = "", Text = "選擇車款" },
+                                new SelectListItem { Value = "AAA0001", Text = "NX 200" },
+                                new SelectListItem { Value = "AAA0002", Text = "YARiS CROSS" },
+                                new SelectListItem { Value = "AAA0003", Text = "TOWN ACE" },
+                                new SelectListItem { Value = "AAA0004", Text = "SWIFT" },
+                                new SelectListItem { Value = "AAA0005", Text = "Town Ace 廂型車" },
+                                new SelectListItem { Value = "AAA0006", Text = "ALTIS Safety+" },
+                                new SelectListItem { Value = "AAA0007", Text = "ALTIS" },
+                                new SelectListItem { Value = "AAA0008", Text = "PRIUS C" },
+                                new SelectListItem { Value = "AAA0009", Text = "VIOS" },
+                            },
+                            "Value",
+                            "Text",
+                            ViewBag.SelectedCarID ?? TempData["SelectedCarID"]// 设置选中项
+                        ), new { @class = "form-control", required = "required", style = "background-color: #cfcfcf;" })
+
+                    </div>
+                    <p> </p>
+                    <p> </p>
+                    <a href="/Login/Login" button class="btn btn-custom btn-lg px-4 py-2 ml-2" type="button" style="font-size: 15px;">查看價格</a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+
+    <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var dropdownButton1 = document.getElementById('dropdownButton1');
+            var dropdownMenu1 = document.getElementById('dropdownMenu1');
+            var arrowIcon1 = document.getElementById('arrowIcon1');
+
+            dropdownButton1.addEventListener('click', function () {
+                if (dropdownMenu1.classList.contains('show')) {
+                    dropdownMenu1.classList.remove('show');
+                    arrowIcon1.classList.remove('fa-chevron-up');
+                    arrowIcon1.classList.add('fa-chevron-down');
+                } else {
+                    dropdownMenu1.classList.add('show');
+                    arrowIcon1.classList.remove('fa-chevron-down');
+                    arrowIcon1.classList.add('fa-chevron-up');
+                }
+            });
+
+            var dropdownButton2 = document.getElementById('dropdownButton2');
+            var dropdownMenu2 = document.getElementById('dropdownMenu2');
+            var arrowIcon2 = document.getElementById('arrowIcon2');
+
+            dropdownButton2.addEventListener('click', function () {
+                if (dropdownMenu2.classList.contains('show')) {
+                    dropdownMenu2.classList.remove('show');
+                    arrowIcon2.classList.remove('fa-chevron-up');
+                    arrowIcon2.classList.add('fa-chevron-down');
+                } else {
+                    dropdownMenu2.classList.add('show');
+                    arrowIcon2.classList.remove('fa-chevron-down');
+                    arrowIcon2.classList.add('fa-chevron-up');
+                }
+            });
+        });
+
+        function navigateToOrderCreate() {
+            window.location.href = "/Store/SIndex";
+        }
+
+        function navigateToOrderIndex() {
+            window.location.href = "/Store/TIndex";
+        }
+        function navigateToOrderreate() {
+            window.location.href = "/User/Edit";
+        }
+
+        function navigateToOrderndex() {
+            window.location.href = "/User/OrderList";
+        }
+        function navigateToOrderdex() {
+            window.location.href = "/User/MEdit";
+        }
+        function logout() {
+            window.location.href = '/Login/Logout'; // Modify the URL according to your routing
+        }
+    </script>
+</body>
+</html>

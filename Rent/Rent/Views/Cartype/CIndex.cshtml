@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Rent.Models.carType>
+
+@{
+    ViewBag.Title = "車型";
+}
+
+<h2>車型</h2>
+
+
+<p>
+    @Html.ActionLink("建立車型", "CCreate")
+</p>
+@using (Html.BeginForm("CIndex", "Cartype", FormMethod.Get))
+{
+    <p>
+        @Html.TextBox("searchTypeID", ViewBag.CurrentFilter as int?, new { placeholder = "Search" })
+        <input type="submit" value="搜尋" />
+    </p>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.typeID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.carType1)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.typeID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.carType1)
+            </td>
+            <td>
+                @Html.ActionLink("編輯", "CEdit", new { id = item.typeID }) |
+
+                @Html.ActionLink("刪除", "CDelete", new { id = item.typeID }, new { onclick = "return confirm('確定要刪除嗎')" })
+            </td>
+        </tr>
+    }
+
+
+</table>

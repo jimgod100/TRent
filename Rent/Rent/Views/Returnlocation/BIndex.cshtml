@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Rent.Models.ReturnLocation>
+
+@{
+    ViewBag.Title = "還車地點";
+}
+
+<h2>還車地點</h2>
+
+<p>
+    @Html.ActionLink("建立地點", "BCreate")
+</p>
+@using (Html.BeginForm("BIndex", "Returnlocation", FormMethod.Get))
+{
+    <p>
+        @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { placeholder = "Search" })
+        <input type="submit" value="搜尋" />
+    </p>
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.returnLocation1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.returnAddress)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.returnLocation1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.returnAddress)
+            </td>
+            <td>
+                @Html.ActionLink("編輯", "BEdit", new { brandID = item.returnID }) |
+
+                @Html.ActionLink("刪除", "BDelete", new { id = item.returnID }, new { onclick = "return confirm('確定要刪除嗎')" })
+            </td>
+        </tr>
+    }
+
+</table>

@@ -1,0 +1,173 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>訂單結帳</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- jquery CDN include -->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+            integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <!-- CSS include -->
+    <link rel="stylesheet" type="text/css" href="../Content/bootstrap.css">
+    <script src="../Scripts/bootstrap.bundle.js"></script>
+
+</head>
+<style>
+    .card-body {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .card {
+        width: 24rem; /* 或更宽，取决于你的具体需要 */
+    }
+
+    .container {
+        max-width: 95%; /* 或根据需要调整 */
+    }
+
+    td {
+        padding: 8px; /* 适当调整这个值以达到最佳效果 */
+    }
+</style>
+
+<body>
+    <script>
+        function convertDateTime(datetimeStr) {
+            let parts = datetimeStr.split(' ');
+            let datePart = parts[0];
+            let timeOfDay = parts[1];
+            let timePart = parts[2];
+
+            let dateComponents = datePart.split('/');
+            let timeComponents = timePart.split(':');
+
+            let hour = parseInt(timeComponents[0]);
+            if (timeOfDay === '下午' && hour < 12) {
+                hour += 12;
+            }
+            timeComponents[0] = hour.toString().padStart(2, '0');
+
+            let month = parseInt(dateComponents[1]).toString().padStart(2, '0');
+            let day = parseInt(dateComponents[2]).toString().padStart(2, '0');
+
+            return `${dateComponents[0]}/${month}/${day} ${timeComponents.join(':')}`;
+        }
+
+        $(document).ready(function () {
+            let orderId = new URLSearchParams(window.location.search).get('orderId');
+            let amount = new URLSearchParams(window.location.search).get('amount');
+            let name = new URLSearchParams(window.location.search).get('name');
+            let quantity = new URLSearchParams(window.location.search).get('quantity');
+            let price = new URLSearchParams(window.location.search).get('price');
+            let ordertime = new URLSearchParams(window.location.search).get('ordertime');
+            let returntime = new URLSearchParams(window.location.search).get('returntime');
+
+            let formattedOrderTime = convertDateTime(ordertime);
+            let formattedReturnTime = convertDateTime(returntime);
+
+            $('#orderAndReturnTime').text(`${formattedOrderTime} ~ ${formattedReturnTime}`);
+
+            let baseLoginPayUrl = 'https://localhost:44380/api/LinePay/';
+            function requestPayment() {
+                let payment = {
+                    amount: amount,
+                    currency: "TWD",
+                    orderId: orderId,
+                    packages: [{
+                        id: "20191011I001",
+                        amount: amount,
+                        name: name,
+                        products: [{
+                            name: name,
+                            imageUrl: "https://i.imgur.com/AN775rR.jpeg",
+                            quantity: quantity,
+                            price: price,
+                        }]
+                    }],
+                    RedirectUrls: {
+                        ConfirmUrl: "https://localhost:44380/Static/confirm.html",
+                        CancelUrl: "https://localhost:44380/api/LinePay/Cancel",
+                    }
+                };
+
+                console.log('Sending payment request:', payment);
+
+                $.post({
+                    url: baseLoginPayUrl + "Create",
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify(payment),
+                    success: (res) => {
+                        console.log('Payment response:', res);
+                        if (res && res.Info && res.Info.PaymentUrl && res.Info.PaymentUrl.Web) {
+                            window.location.href = res.Info.PaymentUrl.Web;
+                        } else {
+                            console.error('Invalid response structure:', res);
+                            alert('處理您的支付時出現問題，請再試一次。');
+                        }
+                    },
+                    error: (xhr, status, error) => {
+                        console.error('Payment request failed:', error);
+                        alert('請求支付時出錯，請稍後再試。');
+                    }
+                });
+            }
+
+            $('#orderId').text(orderId);
+            $('#productName').text(name);
+            $('#productQuantity').text(quantity);
+            $('#productPrice').text(price);
+            $('#totalAmount').text(amount);
+            $('#orderAndReturnTime').text(`${formattedOrderTime} ~ ${formattedReturnTime}`);
+
+            $('#payButton').click(function () {
+                console.log('Pay button clicked');
+                requestPayment();
+            });
+            document.getElementById('payButton').addEventListener('mouseover', function () {
+                this.style.backgroundColor = 'gray';
+            });
+            document.getElementById('payButton').addEventListener('mouseout', function () {
+                this.style.backgroundColor = 'black';
+            });
+        });
+    </script>
+
+    <!-- 最上方的 bar -->
+    <!-- 商品畫面 -->
+    <center>
+        <div class="card" style="width: 24rem;">
+            <img src="../Image/logo.jpg" class="card-img-top">
+            <div class="card-body" style="padding-left: 20px; padding-right: 20px;">
+                <h5 class="card-title"><strong>訂單結帳</strong></h5>
+                <table id="orderDetails" class="table">
+                    <tr>
+                        <th>訂單 ID</th>
+                        <td id="orderId" style="padding: 8px;"></td>
+                    </tr>
+                    <tr>
+                        <th>產品名稱</th>
+                        <td id="productName" style="padding: 8px;"></td>
+                    </tr>
+                    <tr>
+                        <th>訂單時間</th>
+                        <td id="orderAndReturnTime" style="padding: 8px;"></td>
+                    </tr>
+
+                    <tr>
+                        <th>總金額</th>
+                        <td id="totalAmount" style="padding: 8px;"></td>
+                    </tr>
+                </table>
+                <a href="#" class="btn btn-primary" id="payButton" style="background-color: black; color: white; border: none;">立即支付</a>
+
+            </div>
+
+        </div>
+
+    </center>
+</body>
+</html>

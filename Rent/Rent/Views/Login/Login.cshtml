@@ -1,0 +1,216 @@
+﻿@{
+    ViewBag.Title = "Login";
+    Layout = null;
+}
+
+
+@Styles.Render("~/Content/css")
+@Styles.Render("~/Content/sidebars")
+@Scripts.Render("~/bundles/modernizr")
+@Scripts.Render("~/bundles/sidebars")
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/popper")
+@Scripts.Render("~/bundles/bootstrap")
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+    <title>登入</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sign-in/">
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            height: 100%;
+            background-color: #f5f5f5;
+            background-image: url('https://cdn.wallpapersafari.com/63/29/wTKOj4.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-signin {
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            margin: auto;
+        }
+
+            .form-signin input[type="email"],
+            .form-signin input[type="password"] {
+                margin-bottom: 10px;
+                border-radius: 0;
+            }
+
+        .btn-custom {
+            background-color: #000000;
+            color: white;
+        }
+
+            .btn-custom:hover {
+                background-color: #3c3c3c;
+            }
+
+        .btn-container {
+            padding: 0;
+        }
+
+        .form-control:focus {
+            background-color: white !important;
+            border-color: black !important;
+            border-width: 2px !important;
+            box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0) !important;
+        }
+
+        .navbar-brand {
+            font-family: 'Uber Move';
+        }
+
+        .dropdown-menu-custom {
+            display: none;
+            position: absolute;
+            background-color: white;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            margin-top: 5px;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.4s ease, transform 0.4s ease, max-height 0.4s ease;
+            max-height: 0;
+            overflow: hidden;
+            width: 200px;
+        }
+
+            .dropdown-menu-custom.show {
+                display: block;
+                opacity: 1;
+                transform: translateY(0);
+                max-height: 500px;
+            }
+
+        .dropdown-item-custom {
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            color: gray;
+        }
+
+            .dropdown-item-custom:hover {
+                background-color: #f1f1f1;
+                color: black;
+            }
+    </style>
+</head>
+
+<body class="text-center">
+    <header>
+        <nav class="navbar navbar-dark" style="background-color: #000000;">
+            <div class="container">
+                <a href="/User/Front" class="navbar-brand">TRent</a>
+                <div class="d-flex">
+                    <a href="/User/Front" class="btn btn-custom rounded-pill btn-sm px-2 py-2">首頁</a>
+                    <a href="/User/Index" class="btn btn-custom rounded-pill btn-sm px-2 py-2 mx-2">車款</a>
+                    <a href="/Order/Create" class="btn btn-custom rounded-pill btn-sm px-2 py-2">預約</a>
+                    <a href="/Login/Login" class="btn btn-custom rounded-pill btn-sm px-2 py-2 mx-2">登入</a>
+                    <a href="/Login/Register" class="btn btn-light rounded-pill btn-sm px-2 py-2">註冊</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="form-signin">
+        <form accept-charset="@Url.Action("Login")" method="post">
+            <p></p>
+            <img class="mb-4" src="~/Image/logo.jpg" alt="" width="72" height="57">
+            <h1 class="h3 mb-3 fw-normal text-white">登入</h1>
+
+            <div class="form-floating">
+                <input id="Email" name="Email" type="text" class="form-control" placeholder="輸入信箱" required />
+                <label for="Email">輸入信箱</label>
+            </div>
+            <p></p>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="Passwd" name="Passwd" placeholder="輸入密碼" required />
+                <label for="Passwd">輸入密碼</label>
+            </div>
+
+            <button class="btn btn-lg btn-primary" id="Submit1" type="submit" value="登入">登入</button>
+            <a class="btn btn-lg btn-warning" href="/Login/Register" role="button">註冊</a>
+            <div>
+                <a href="/Email/Forget">忘記密碼</a>
+            </div>
+            <div class="alert-danger text-white">@ViewBag.Message</div>
+        </form>
+    </main>
+</body>
+</html>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var dropdownButton1 = document.getElementById('dropdownButton1');
+        var dropdownMenu1 = document.getElementById('dropdownMenu1');
+        var arrowIcon1 = document.getElementById('arrowIcon1');
+
+        dropdownButton1.addEventListener('click', function () {
+            if (dropdownMenu1.classList.contains('show')) {
+                dropdownMenu1.classList.remove('show');
+                arrowIcon1.classList.remove('fa-chevron-up');
+                arrowIcon1.classList.add('fa-chevron-down');
+            } else {
+                dropdownMenu1.classList.add('show');
+                arrowIcon1.classList.remove('fa-chevron-down');
+                arrowIcon1.classList.add('fa-chevron-up');
+            }
+        });
+
+        var dropdownButton2 = document.getElementById('dropdownButton2');
+        var dropdownMenu2 = document.getElementById('dropdownMenu2');
+        var arrowIcon2 = document.getElementById('arrowIcon2');
+
+        dropdownButton2.addEventListener('click', function () {
+            if (dropdownMenu2.classList.contains('show')) {
+                dropdownMenu2.classList.remove('show');
+                arrowIcon2.classList.remove('fa-chevron-up');
+                arrowIcon2.classList.add('fa-chevron-down');
+            } else {
+                dropdownMenu2.classList.add('show');
+                arrowIcon2.classList.remove('fa-chevron-down');
+                arrowIcon2.classList.add('fa-chevron-up');
+            }
+        });
+    });
+
+    function navigateToOrderCreate() {
+        window.location.href = "/Store/SIndex";
+    }
+
+    function navigateToOrderIndex() {
+        window.location.href = "/Store/TIndex";
+    }
+    function navigateToOrderreate() {
+        window.location.href = "/User/Edit";
+    }
+
+    function navigateToOrderndex() {
+        window.location.href = "/User/OrderList";
+    }
+    function navigateToOrderdex() {
+        window.location.href = "/User/MEdit";
+    }
+    function logout() {
+        window.location.href = '/Login/Logout'; // Modify the URL according to your routing
+    }
+</script>

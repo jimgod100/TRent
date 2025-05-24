@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Rent.Models.Brand>
+
+@{
+    ViewBag.Title = "品牌建立";
+}
+
+
+<h2>品牌建立</h2>
+
+<p>
+    @Html.ActionLink("建立品牌", "BCreate")
+</p>
+@using (Html.BeginForm("BIndex", "Brand", FormMethod.Get))
+{
+    <p>
+        @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { placeholder = "Search" })
+        <input type="submit" value="搜尋" />
+    </p>
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.brandID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.English)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Chinese)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.brandID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.English)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Chinese)
+            </td>
+            <td>
+                @Html.ActionLink("編輯", "BEdit", new { brandID = item.brandID }) |
+
+                @Html.ActionLink("刪除", "BDelete", new { brandID = item.brandID }, new { onclick = "return confirm('確定要刪除嗎')" })
+            </td>
+        </tr>
+    }
+
+</table>

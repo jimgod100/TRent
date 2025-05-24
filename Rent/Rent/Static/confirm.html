@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>訂單完成</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- jquery CDN include -->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+            integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <!-- CSS include -->
+    <link rel="stylesheet" type="text/css" href="../Content/bootstrap.css">
+    <script src="../Scripts/bootstrap.bundle.js"></script>
+
+</head>
+
+<body>
+    <script>
+        let baseLoginPayUrl = 'https://localhost:44380/api/LinePay/';
+        let transactionId = "";
+        let orderId = "";
+        let amount = new URLSearchParams(window.location.search).get('amount');
+        let name = new URLSearchParams(window.location.search).get('name');
+        let quantity = new URLSearchParams(window.location.search).get('quantity');
+        let price = new URLSearchParams(window.location.search).get('price');
+
+        window.onload = () => {
+            // 取出 query parameter 中的 transactionId & orderId
+            const params = new Proxy(new URLSearchParams(window.location.search), {
+                get: (searchParams, prop) => searchParams.get(prop),
+            });
+
+            transactionId = params.transactionId;
+            orderId = params.orderId;
+
+            document.getElementById('payButton').addEventListener('mouseover', function () {
+                this.style.backgroundColor = 'gray';
+            });
+            document.getElementById('payButton').addEventListener('mouseout', function () {
+                this.style.backgroundColor = 'black';
+            });
+        }
+
+        function confirmPayment() {
+            $.ajax({
+                url: '/User/PaymentConfirmation',  // 更新 URL 以指向服务器端的 PaymentConfirmation 方法
+                type: 'POST',
+                data: { orderId: orderId },  // 确保发送正确的订单ID
+                success: function (response) {
+                    // 处理成功逻辑，如更新界面或重定向
+                    window.location.href = "/User/OrderList";  // 如果控制器方法处理重定向，这里可能不需要
+                },
+            });
+        }
+    </script>
+
+    <!-- 最上方的 bar -->
+
+    <center>
+        <div class="card" style="width: 24rem;">
+            <img src="../Image/logo.jpg" class="card-img-top">
+            <div class="card-body" style="padding-left: 20px; padding-right: 20px;">
+                <h5 class="card-title"><strong>訂單完成</strong></h5>
+                <table id="orderDetails" class="table">
+                </table>
+
+                <a href="#" class="btn btn-primary" id="payButton" style="background-color: black; color: white; border: none;" onclick="confirmPayment()">回到訂單</a>
+            </div>
+        </div>
+    </center>
+
+</body>
+
+</html>

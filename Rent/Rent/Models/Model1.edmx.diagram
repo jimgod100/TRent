@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="316ad9866db544a3961331b31637cb2b" Name="Diagram1">
+        <EntityTypeShape EntityType="rentModel.Brand" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="rentModel.Car" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="rentModel.carType" Width="1.5" PointX="0.75" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="rentModel.Drive" Width="1.5" PointX="5.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="rentModel.Driver" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="rentModel.Member" Width="1.5" PointX="3" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="rentModel.Order" Width="1.5" PointX="5.25" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="rentModel.RentLocation" Width="1.5" PointX="3" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="rentModel.ReturnLocation" Width="1.5" PointX="3" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="rentModel.Store" Width="1.5" PointX="7.75" PointY="4.75" IsExpanded="true" />
+        <AssociationConnector Association="rentModel.FK_Car_ToBrand" ManuallyRouted="false" />
+        <AssociationConnector Association="rentModel.FK_Car_TocarType" ManuallyRouted="false" />
+        <AssociationConnector Association="rentModel.FK_Order_ToCar" ManuallyRouted="false" />
+        <AssociationConnector Association="rentModel.FK_Order_ToMember" ManuallyRouted="false" />
+        <AssociationConnector Association="rentModel.FK_Order_ToRentLocation" ManuallyRouted="false" />
+        <AssociationConnector Association="rentModel.FK_Order_ToReturnLocation" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="rentModel.AggregatedCounter" Width="1.5" PointX="10.375" PointY="0.75" />
+        <EntityTypeShape EntityType="rentModel.Counter" Width="1.5" PointX="10.375" PointY="3.75" />
+        <EntityTypeShape EntityType="rentModel.Hash" Width="1.5" PointX="10.375" PointY="6.75" />
+        <EntityTypeShape EntityType="rentModel.Job" Width="1.5" PointX="5.375" PointY="10.125" />
+        <EntityTypeShape EntityType="rentModel.JobParameter" Width="1.5" PointX="7.625" PointY="12.125" />
+        <EntityTypeShape EntityType="rentModel.JobQueue" Width="1.5" PointX="10.375" PointY="9.75" />
+        <EntityTypeShape EntityType="rentModel.List" Width="1.5" PointX="12.375" PointY="0.75" />
+        <EntityTypeShape EntityType="rentModel.Schema" Width="1.5" PointX="12.375" PointY="3.75" />
+        <EntityTypeShape EntityType="rentModel.Server" Width="1.5" PointX="12.375" PointY="5.75" />
+        <EntityTypeShape EntityType="rentModel.Set" Width="1.5" PointX="12.375" PointY="8.75" />
+        <EntityTypeShape EntityType="rentModel.State" Width="1.5" PointX="7.625" PointY="9.125" />
+        <AssociationConnector Association="rentModel.FK_HangFire_JobParameter_Job" />
+        <AssociationConnector Association="rentModel.FK_HangFire_State_Job" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
